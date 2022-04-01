@@ -1,5 +1,7 @@
 const express = require('express');
 
+liveStatus = require('./liveStatus');
+
 const app = express();
 app.use(express.json());
 
@@ -10,41 +12,18 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/api/test2', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-        message: 'post'
+app.get('/api/liveStatus', (req, res, next) => {
+    res.status(200).json({
+        status: liveStatus.status
     });
 });
 
 
-
-app.get('/api/test2', (req, res, next) => {
-    const stuff = { message: 'test2' };
-    res.status(200).json(stuff);
-});
-
-
-
-
-
-app.use((req, res, next) => {
-    console.log('received');
-    next();
-});
-
-app.use((req, res, next) => {
-    res.status(201);
-    next();
-});
-
-app.use((req, res, next) => {
-    res.json({ message: 'test' });
-    next();
-});
-
-app.use((req, res, next) => {
-    console.log('sent back');
+app.get('/api/toggleLiveStatus', (req, res, next) => {
+    liveStatus.toggleStatus();
+    res.status(201).json({
+        status: liveStatus.status
+    });
 });
 
 module.exports = app;
