@@ -3,30 +3,47 @@
 
 <video id="videoElement" controls autoplay></video>
 <button id="toggleLiveStatusButton" type="button" onclick="toggleLive()"></button>
+<select name="lives" id="lives" onchange="changeLive()">
+</select>
 
 <script>
-    window.onload = function(){
-        $.get("http://195.14.189.82:3000/api/liveStatus", function(data, status){
-            document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
+    var host = "localhost";
+    //var host = "195.14.189.82";
+
+    window.onload = function () {
+        $.get("http://"+host+":3000/api/livesList", function (data, status) {
+            var htmlStr = "";
+            console.log(data.lives);
+            for (var i = 0; i < data.lives.length; i++) {
+                htmlStr += "<option value=" + data.lives[i][0] + " id=option"+data.lives[i][0]+">" + data.lives[i][0] + " (" + data.lives[i][1] + ")</option>";
+            }
+            document.getElementById("lives").innerHTML = htmlStr;
+            document.getElementById("toggleLiveStatusButton").innerHTML = data.lives[0][1];
         });
     }
 
-    function toggleLive(){
-        $.get("http://195.14.189.82:3000/api/toggleLiveStatus", function(data, status){
+    function toggleLive() {
+        $.get("http://"+host+":3000/api/toggleLiveStatus?id="+document.getElementById("lives").value, function (data, status) {
+            document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
+            document.getElementById("option"+document.getElementById("lives").value).innerHTML = document.getElementById("lives").value+" ("+data.status+")";
+        });
+    }
+    function changeLive() {
+        playLive(document.getElementById("lives").value);
+        $.get("http://"+host+":3000/api/liveStatus?id="+document.getElementById("lives").value, function (data, status) {
             document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
         });
     }
-</script>
-
-<script>
-    if (flvjs.isSupported()) {
-        var videoElement = document.getElementById('videoElement');
-        var flvPlayer = flvjs.createPlayer({
-            type: 'flv',
-            url: 'http://195.14.189.82:8000/live/test.flv'
-        });
-        flvPlayer.attachMediaElement(videoElement);
-        flvPlayer.load();
-        flvPlayer.play();
-    } 
+    function playLive(i) {
+        if (flvjs.isSupported()) {
+            var videoElement = document.getElementById("videoElement");
+            var flvPlayer = flvjs.createPlayer({
+                type: "flv",
+                url: "http://"+host+":8000/live/" + document.getElementById("lives").value + ".flv"
+            });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play();
+        }
+    }
 </script>

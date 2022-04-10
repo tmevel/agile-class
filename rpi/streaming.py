@@ -3,13 +3,21 @@ import requests
 import os
 from time import sleep
 
+host = "localhost"
+#host = "195.14.189.82"
+
 
 def runLiveStreamService():
     ffmpeg = None
+    try:
+        liveNumber = requests.get('http://'+host+':3000/api/createLive').json()['status']
+    except:
+        print('error: cannot create a live')
+
     while(True):
         status = 'OFF'
         try:
-            status = requests.get('http://195.14.189.82:3000/api/liveStatus').json()['status']
+            status = requests.get('http://'+host+':3000/api/liveStatus?id='+liveNumber).json()['status']
         except:
             print('error: cannot get live status from backend')
         
