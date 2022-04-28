@@ -1,32 +1,28 @@
-<script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-
-<video id="videoElement" controls autoplay></video>
-<button id="toggleLiveStatusButton" type="button" onclick="toggleLive()"></button>
-
-<script>
-    window.onload = function(){
-        $.get("http://195.14.189.82:3000/api/liveStatus", function(data, status){
-            document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
-        });
-    }
-
-    function toggleLive(){
-        $.get("http://195.14.189.82:3000/api/toggleLiveStatus", function(data, status){
-            document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
-        });
-    }
-</script>
-
-<script>
-    if (flvjs.isSupported()) {
-        var videoElement = document.getElementById('videoElement');
-        var flvPlayer = flvjs.createPlayer({
-            type: 'flv',
-            url: 'http://195.14.189.82:8000/live/test.flv'
-        });
-        flvPlayer.attachMediaElement(videoElement);
-        flvPlayer.load();
-        flvPlayer.play();
-    } 
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="livestream.css">
+</head>
+<body onload="startTime()">
+    <h1>Remote control </h1>
+    
+    <video id="vid" width="540" class="center" autoplay></video>
+    <div class="below_video">
+        <div class="date"  id="currentTime"></div>
+        <div class="text">OFF</div>
+        <div class="container">
+            <div class="toggle">
+    
+               <div class="toggle-button" onclick="Animatedtoggle()">             
+               </div> 
+            </div>
+        </div>
+    </div>
+    
+    <script src="index.js"></script>
+</body>
+</html>

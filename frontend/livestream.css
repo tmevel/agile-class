@@ -1,0 +1,79 @@
+.center{
+    display: block;
+    margin-top: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+p {
+    background-image: url('background_image.jpg');
+  }
+  
+
+h1{
+    text-align: center;
+    margin-top: 60px;
+    font-family: Arial;
+}
+
+body{
+   /* background-color: whitesmoke; */
+    width: auto;
+    background-image: url('background_image.jpg');
+    background-repeat: no-repeat;
+    background-size: 1200px 744px;
+    overflow-y: hidden;
+}
+
+
+.below_video .date{
+    display: block;
+    width: 300px;
+    color: black;
+    font-size: large;
+    margin-left: 52%;
+    margin-top: 20px;
+}
+
+.below_video .text{
+    width: 300px;
+    color: black;
+    font-size: large;
+    margin: 37%;
+    margin-top: -20px;
+}
+
+.below_video .container .toggle{
+    position: absolute;
+    top: 608px;
+    left: 33%;
+    height: 30px;
+    width: 50px;
+    background-color: #444;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.below_video .container .toggle.active{
+    background: cornflowerblue;
+
+}
+
+.below_video .container .toggle .toggle-button{
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    width: 22px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.below_video .container .toggle.active .toggle-button{  
+    left: 25px;
+
+}
