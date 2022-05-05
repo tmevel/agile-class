@@ -1,9 +1,24 @@
+.moments_captured{
+    position: absolute;
+    left: 1060px;
+    top: 230px;
+    font-size: 20px;
+}
+
+.dev{
+    position: absolute;
+    left: 650px;
+    top: 650px;
+    font-size: large;
+    width: 300px;
+}
+
 .center{
     display: block;
     margin-top: 90px;
-    margin-left: auto;
+    margin-left: 21%;
     margin-right: auto;
-    border: 3px solid black;
+    border: 3px solid grey;
     border-radius: 10px;
 }
 
@@ -33,7 +48,7 @@ body{
     width: 300px;
     color: black;
     font-size: large;
-    margin-left: 52%;
+    margin-left: 42%;
     margin-top: 20px;
 }
 
@@ -41,14 +56,14 @@ body{
     width: 300px;
     color: black;
     font-size: large;
-    margin: 37%;
+    margin: 27%;
     margin-top: -20px;
 }
 
 .below_video .container .toggle{
     position: absolute;
     top: 608px;
-    left: 33%;
+    left: 23%;
     height: 30px;
     width: 50px;
     background-color: #444;
@@ -76,4 +91,31 @@ body{
 .below_video .container .toggle.active .toggle-button{  
     left: 25px;
 
+}
+
+table th{
+    text-align: center;
+    background-color: #3a6070;
+    color: #FFF;
+    border: 2px solid grey;
+    padding: 4px 100px 4px 8px;
+}
+
+table td{
+    border: 2px solid grey;
+    padding: 4px 8px;
+}
+
+table tr:nth-child(odd) td {
+    background-color: #e7edf0;
+}
+
+table{
+    position: absolute;
+    display: block;
+    left: 1050px;
+    top: 270px;
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

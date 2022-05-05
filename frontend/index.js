@@ -27,11 +27,12 @@ if(hours < 10){
     hours = "0" + hours;
 }
 
-var str = new String("Current time");
+var str1 = new String("Current time");
+var str2 = new String("Device");
 
 
 
-var time = str.bold() + ': ' +  hours + ' :  ' + minutes + ' : ' + seconds + '  ' + amPm;
+var time = str1.bold() + ': ' +  hours + ' :  ' + minutes + ' : ' + seconds + '  ' + amPm;
 
 
 /*display current time*/
