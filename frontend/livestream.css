@@ -1,38 +1,3 @@
-.moments_captured{
-    position: absolute;
-    left: 1060px;
-    top: 230px;
-    font-size: 20px;
-}
-
-.dev{
-    position: absolute;
-    left: 650px;
-    top: 650px;
-    font-size: large;
-    width: 300px;
-}
-
-.center{
-    display: block;
-    margin-top: 90px;
-    margin-left: 21%;
-    margin-right: auto;
-    border: 3px solid grey;
-    border-radius: 10px;
-}
-
-p {
-    background-image: url('background_image.jpg');
-  }
-  
-
-h1{
-    text-align: center;
-    margin-top: 60px;
-    font-family: Arial;
-}
-
 body{
    /* background-color: whitesmoke; */
     width: auto;
@@ -42,41 +7,68 @@ body{
     overflow-y: hidden;
 }
 
-
-.below_video .date{
-    display: block;
-    width: 300px;
-    color: black;
-    font-size: large;
-    margin-left: 42%;
-    margin-top: 20px;
-}
-
-.below_video .text{
-    width: 300px;
-    color: black;
-    font-size: large;
-    margin: 27%;
-    margin-top: -20px;
-}
-
-.below_video .container .toggle{
+#container{
     position: absolute;
-    top: 608px;
-    left: 23%;
+    width: 60%;
+    left: 20%;
+}
+
+#left-panel{
+    position: absolute;
+    width: 70%;
+    left: 0%;
+}
+
+#right-panel{
+    position: absolute;
+    width: 30%;
+    right: 0%;
+}
+
+.below-video{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+}
+
+.video-player{
+    width: 640px;
+    height: 320px;
+
+}
+
+#live-select{
+    position: absolute;
+    height: 30px;
+    width: 120px;
+    left: 150px;
+    font-size: 16px;
+}
+
+#status{
+    position: absolute;
+    height: 30px;
+    width: 60px;
+    left: 0%;
+    font-size: 25px;
+}
+
+#toggle{
+    position: absolute;
     height: 30px;
     width: 50px;
+    left: 60px;
     background-color: #444;
     border-radius: 30px;
     transition: 0.3s;
 }
 
-.below_video .container .toggle.active{
+#toggle.active{
     background: cornflowerblue;
 
 }
 
-.below_video .container .toggle .toggle-button{
+#toggle .toggle-button{
     position: absolute;
     top: 3px;
     left: 5px;
@@ -88,7 +80,7 @@ body{
     transition: 0.3s;
 }
 
-.below_video .container .toggle.active .toggle-button{  
+#toggle.active .toggle-button{  
     left: 25px;
 
 }
@@ -108,14 +100,4 @@ table td{
 
 table tr:nth-child(odd) td {
     background-color: #e7edf0;
-}
-
-table{
-    position: absolute;
-    display: block;
-    left: 1050px;
-    top: 270px;
-    height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
 }

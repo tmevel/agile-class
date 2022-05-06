@@ -1,80 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="livestream.css">
+    <script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 </head>
 
 <body onload="startTime()">
-    <h1>Remote control </h1>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Time</th>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-        <tr>
-            <td>02/05/2022</td>
-            <td>08:17:48 pm</td>
-        </tr>
-    </table>
-   <div class="moments_captured">   
-       <b>    List of motions detected:</b>  
-</div> 
-    
-    <video id="vid" width="540" class="center" autoplay></video>
-    <div class="below_video">
-        <div class="date"  id="currentTime"></div>
-        <div class="text">OFF</div>
-        <div class="container">
-            <div class="toggle">
-    
-               <div class="toggle-button" onclick="Animatedtoggle()">             
-               </div> 
+    <div id="container">
+        <div id="right-panel">
+            <h1>List of motions detected:</h1>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+                <tr>
+                    <td>02/05/2022</td>
+                    <td>08:17:48 pm</td>
+                </tr>
+            </table>
+        </div>
+        <div id="left-panel">
+            <h1>Remote control</h1>
+            <div id="stream-panel">
+                <video id="videoElement" class="video-player" controls autoplay></video>
+                <div class="below-video">
+                    <div id="current-date" id="currentTime"></div>
+                    <div id="status">OFF</div>
+                    <div id="toggle">
+
+                        <div class="toggle-button" onclick="toggleLive()">
+                        </div>
+                    </div>
+                    <select name="lives" id="live-select" onchange="changeLive()"></select>
+                </div>
             </div>
+            <div class="dev" id="device"></div>
         </div>
     </div>
-    <div class="dev" id="device"></div> 
-    
-    
     <script src="index.js"></script>
+
 </body>
+
 </html>
