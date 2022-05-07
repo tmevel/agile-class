@@ -3,8 +3,8 @@ import requests
 import os
 from time import sleep
 
-#host = "localhost"
-host = "195.14.189.82"
+host = "localhost"
+#host = "195.14.189.82"
 
 
 def runLiveStreamService():
@@ -24,7 +24,7 @@ def runLiveStreamService():
         if(status == 'ON' and ffmpeg is None):
             try:
                 print('start...')
-                ffmpeg = subprocess.Popen("ffmpeg -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://195.14.189.82/live/"+str(liveNumber), shell = True)
+                ffmpeg = subprocess.Popen("ffmpeg -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://"+host+"/live/"+str(liveNumber), shell = True)
             except:
                 print('cannot run ffmpeg')
         elif(status == 'OFF' and ffmpeg is not None):

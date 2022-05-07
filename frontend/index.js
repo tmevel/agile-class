@@ -39,7 +39,8 @@ function startTime() {
 
 var toggle;
 var text;
-var host = "195.14.189.82";
+//var host = "195.14.189.82";
+var host = "localhost";
 
 window.onload = function () {
     toggle = document.querySelector("#toggle");
@@ -47,12 +48,12 @@ window.onload = function () {
 
     $.get("http://" + host + ":3000/api/livesList", function (data, status) {
         var htmlStr = "";
-        console.log(data.lives);
         for (var i = 0; i < data.lives.length; i++) {
             htmlStr += "<option value=" + data.lives[i][0] + " id=option" + data.lives[i][0] + ">" + data.lives[i][0] + " (" + data.lives[i][1] + ")</option>";
         }
         document.getElementById("live-select").innerHTML = htmlStr;
-        document.getElementById("toggleLiveStatusButton").innerHTML = data.lives[0][1];
+        text.innerHTML = data.lives[0][1];
+        changeLive();
     });
 }
 
@@ -68,15 +69,15 @@ function Animatedtoggle(){
 
 function toggleLive() {
     Animatedtoggle();
-    $.get("http://" + host + ":3000/api/toggleLiveStatus?id=" + document.getElementById("lives").value, function (data, status) {
-        document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
+    $.get("http://" + host + ":3000/api/toggleLiveStatus?id=" + document.getElementById("live-select").value, function (data, status) {
+        text.innerHTML = data.status;
         document.getElementById("option" + document.getElementById("live-select").value).innerHTML = document.getElementById("live-select").value + " (" + data.status + ")";
     });
 }
 function changeLive() {
     playLive(document.getElementById("live-select").value);
     $.get("http://" + host + ":3000/api/liveStatus?id=" + document.getElementById("live-select").value, function (data, status) {
-        document.getElementById("toggleLiveStatusButton").innerHTML = data.status;
+        text.innerHTML = data.status;
     });
 }
 function playLive(i) {
