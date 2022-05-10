@@ -14,6 +14,7 @@ RaspberryPi.init({
   },
   Name: {
     type: DataTypes.STRING,
+    unique: true,
     allowNull: false
   }
 }, {

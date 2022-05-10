@@ -6,7 +6,12 @@ const {
 // RPi
 
 function getAllRaspberryPis(){
-    return RaspberryPi.findAll({raw: true});
+    return RaspberryPi.findAll(
+        {
+            raw: true,
+            attributes: {exclude: ['updatedAt', 'createdAt']}
+        }
+    );
 }
 
 function getRaspberryPiById(id){
@@ -14,7 +19,8 @@ function getRaspberryPiById(id){
         where: {
             Id: id
         },
-        raw: true
+        raw: true,
+        attributes: {exclude: ['updatedAt', 'createdAt']}
     });
 }
 
@@ -26,16 +32,21 @@ function insertRaspberryPi(name){
 // Activation Report
 
 function getAllActivationReports(){
-    return ActivationReport.findAll({raw: true});
+    return ActivationReport.findAll(
+    {
+    raw: true,
+    attributes: {exclude: ['updatedAt', 'createdAt']}
+    });
 }
 
 
 function getActivationReportById(id){
-    return ActivationReport.findAll({
+    return ActivationReport.findOne({
         where: {
             Id: id
         },
-        raw: true
+        raw: true,
+        attributes: {exclude: ['updatedAt', 'createdAt']}
     });
 }
 
@@ -45,4 +56,21 @@ function insertActivationReport(datetime, screenshotPath, videoPath, raspberryPi
         ScreenshotPath: screenshotPath, 
         VideoPath: videoPath,
         RaspberryPiId: raspberryPiId});
+}
+
+function getActivationReportTimeStamps(){
+    return ActivationReport.findAll({
+        attributes: ['DateTime'],
+        raw: true
+    });
+}
+
+module.exports = {
+    getAllRaspberryPis,
+    getRaspberryPiById,
+    insertRaspberryPi,
+    getAllActivationReports,
+    getActivationReportById,
+    insertActivationReport,
+    getActivationReportTimeStamps
 }
