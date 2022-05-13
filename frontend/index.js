@@ -39,8 +39,8 @@ function startTime() {
 
 var toggle;
 var text;
-//var host = "195.14.189.82";
-var host = "localhost";
+var host = "195.14.189.82";
+//var host = "localhost";
 
 window.onload = function () {
     toggle = document.querySelector("#toggle");

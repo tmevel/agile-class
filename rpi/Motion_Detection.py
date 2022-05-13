@@ -1,4 +1,30 @@
 import cv2
+import subprocess
+import requests
+import os
+from time import sleep
+
+#host = "localhost"
+host = "195.14.189.82"
+
+upload_url = 'http://'+host+':3000/upload'
+
+
+
+
+def filmAndSend():
+    print("start 30s video capture")
+    try:
+        os.system('killall ffmpeg')
+        ffmpeg = subprocess.Popen("ffmpeg -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f mp4 out.mp4", shell = True)
+        sleep(10)
+        os.system('killall ffmpeg')
+        with open('out.mp4', 'rb') as f: r = requests.post(upload_url, files={'out.mp4': f})
+    except Exception as e:
+        print(e)
+
+    
+
 
 # capturing video/ (0) means source is from local camera
 capture = cv2.VideoCapture(0)
@@ -32,13 +58,5 @@ while capture.isOpened():
     contours, hierarchy = cv2.findContours(thresh_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # to draw the bounding box when the motion is detected
-    for contour in contours:
-        x, y, w, h = cv2.boundingRect(contour)
-        if cv2.contourArea(contour) > 300:
-            cv2.rectangle(img_1, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    # cv2.drawContours(img_1, contours, -1, (0, 255, 0), 2)
-
-    # display the output
-    cv2.imshow("Detecting Motion...", img_1)
-    if cv2.waitKey(100) == 13:
-        exit()
+    if len(contours)>0:
+        filmAndSend()
