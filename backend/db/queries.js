@@ -15,9 +15,19 @@ function getAllRaspberryPis(){
 }
 
 function getRaspberryPiById(id){
-    return RaspberryPi.findAll({
+    return RaspberryPi.findOne({
         where: {
             Id: id
+        },
+        raw: true,
+        attributes: {exclude: ['updatedAt', 'createdAt']}
+    });
+}
+
+function getRaspberryPiByName(name){
+    return RaspberryPi.findOne({
+        where: {
+            Name: name
         },
         raw: true,
         attributes: {exclude: ['updatedAt', 'createdAt']}
@@ -68,6 +78,7 @@ function getActivationReportTimeStamps(){
 module.exports = {
     getAllRaspberryPis,
     getRaspberryPiById,
+    getRaspberryPiByName,
     insertRaspberryPi,
     getAllActivationReports,
     getActivationReportById,

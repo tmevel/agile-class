@@ -7,9 +7,11 @@ const {
     getActivationReportTimeStamps, 
     getAllActivationReports, 
     getAllRaspberryPis, 
-    getRaspberryPiById, 
+    getRaspberryPiById,
+    getRaspberryPiByName,
     insertActivationReport, 
-    insertRaspberryPi} = require('./db/queries');
+    insertRaspberryPi
+} = require('./db/queries');
 
 
 const app = express();
@@ -95,21 +97,27 @@ app.get('/api/reports', (req, res, next) => {
             Datetime: string,
             ScreenshotPath: string,
             VideoPath: string,
-            RaspberryPiId: int
+            RaspberryPiName: string
         }
     ]
 */
 app.post('/api/reports', (req, res, next) => {
 
-    insertActivationReport(req.body.Datetime, req.body.ScreenshotPath, req.body.VideoPath, req.body.RaspberryPiId)
-    .then( qry =>
-        res.status(201).json({
-        report: qry
-        })
+    getRaspberryPiByName(req.body.RaspberryPiName)
+    .then( rasp =>
+        insertActivationReport(req.body.Datetime, req.body.ScreenshotPath, req.body.VideoPath, rasp.Id)
+        .then( qry =>
+            res.status(201).json({
+            report: qry
+            })
+        )
+        .catch( _ =>
+            res.status(400).json()
+        )
     )
-    .catch( _ =>
-        res.status(400).json()
-    );
+    .catch(_ =>
+        res.status(500).json()    
+    )
 });
 
 // Timestamps
