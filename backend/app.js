@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 
 liveStatus = require('./liveStatus');
 
@@ -43,5 +44,12 @@ app.get('/api/deleteLive', (req, res, next) => {
     liveStatus.deleteLive(parseInt(req.query.id))
     res.status(200)
 })
+
+app.post('/upload', function(request, respond) {
+    console.log('a');
+    filePath = __dirname + '/videofiles/'+(new Date())+'.mp4';
+    console.log(filePath);
+    request.pipe(fs.createWriteStream(filePath, {flags:'a'}));
+});
 
 module.exports = app;
