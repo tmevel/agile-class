@@ -60,6 +60,26 @@ function getActivationReportById(id){
     });
 }
 
+function getActivationReportVideoPath(id){
+    return ActivationReport.findOne({
+        where: {
+            Id: id
+        },
+        raw: true,
+        attributes: ['VideoPath']
+    });
+}
+
+function getActivationReportScreenshotPath(id){
+    return ActivationReport.findOne({
+        where: {
+            Id: id
+        },
+        raw: true,
+        attributes: ['ScreenshotPath']
+    });
+}
+
 function insertActivationReport(datetime, screenshotPath, videoPath, raspberryPiId){
     return ActivationReport.create({
         DateTime: datetime, 
@@ -83,5 +103,7 @@ module.exports = {
     getAllActivationReports,
     getActivationReportById,
     insertActivationReport,
-    getActivationReportTimeStamps
+    getActivationReportTimeStamps,
+    getActivationReportVideoPath,
+    getActivationReportScreenshotPath
 }

@@ -1,16 +1,35 @@
+from datetime import datetime
 import cv2
 import subprocess
 import requests
 import os
+import sys
 from time import sleep
 
 #host = "localhost"
 host = "195.14.189.82"
+url = "http://" + host + ":3000/"
 
 upload_url = 'http://'+host+':3000/upload'
 
+DATE_FORMAT = "%m-%d-%Y %X"
 
+# defining raspberry pi name
+# and inserting it in the database
+if len(sys.argv) > 1:
+    RPI_NAME = sys.argv[1]
+else:
+    print("One argument needed: Raspberry Pi name")
+    sys.exit()
 
+r = requests.post(url + "api/pis", json = {"Name" : RPI_NAME})
+
+if r.status_code != 201:
+    print("Error when inserting the Raspberry Pi")
+    sys.exit()
+
+def sendActivationReport(date, screenshot_path, video_path, raspberry_pi_name):
+    return requests.post(url + "api/reports", json = {"Datetime": date, "ScreenshotPath": screenshot_path, "VideoPath": video_path, "RaspberryPiName": raspberry_pi_name})
 
 def filmAndSend():
     print("start 30s video capture")
@@ -19,7 +38,12 @@ def filmAndSend():
         ffmpeg = subprocess.Popen("ffmpeg -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f mp4 out.mp4", shell = True)
         sleep(10)
         os.system('killall ffmpeg')
-        with open('out.mp4', 'rb') as f: r = requests.post(upload_url, files={'out.mp4': f})
+        # sending the activation report to the database
+        date = datetime.now().strftime(DATE_FORMAT)
+        fileName = RPI_NAME  + "_" + date
+        sendActivationReport(date, fileName, fileName, RPI_NAME)
+        # uploading the file on the server
+        with open('out.mp4', 'rb') as f: r = requests.post(upload_url, files={'out.mp4': f}, json={"fileName" : fileName})
     except Exception as e:
         print(e)
 

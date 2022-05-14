@@ -11,9 +11,15 @@ const {
     getRaspberryPiById,
     getRaspberryPiByName,
     insertActivationReport, 
-    insertRaspberryPi
+    insertRaspberryPi,
+    getActivationReportVideoPath,
+    getActivationReportScreenshotPath
 } = require('./db/queries');
 
+const VIDEO_DIR = "/videofiles/";
+const VIDEO_TYPE = ".mp4"
+const IMAGE_DIR = "/imagefiles/"
+const IMAGE_TYPE = ".jpg"
 
 const app = express();
 app.use(express.json());
@@ -58,8 +64,8 @@ app.get('/api/deleteLive', (req, res, next) => {
 })
 
 app.post('/upload', function(request, respond) {
-    console.log('a');
-    filePath = __dirname + '/videofiles/'+(new Date())+'.mp4';
+    //filePath = __dirname + '/videofiles/'+(new Date())+'.mp4';
+    filePath = __dirname + VIDEO_DIR + request.body.fileName + VIDEO_TYPE;
     console.log(filePath);
     request.pipe(fs.createWriteStream(filePath, {flags:'a'}));
 });
@@ -82,10 +88,37 @@ app.post('/upload', function(request, respond) {
 app.get('/api/reports/:id', (req, res, next) => {
 
     getActivationReportById(req.params.id)
-    .then( qry =>
+    .then( qry => {
         res.status(201).json({
                 report: qry
             })
+    }
+    )
+    .catch( _ =>
+        res.status(500).json()
+    );
+});
+
+// get the video recorded for an activation report
+app.get("/api/videos/:id", (req, res, next) => {
+
+    getActivationReportVideoPath(req.params.id)
+    .then( qry => {
+        res.download(qry.VideoPath)
+    }
+    )
+    .catch( _ =>
+        res.status(500).json()
+    );
+});
+
+// get the screenshot recorded for an activation report
+app.get("/api/images/:id", (req, res, next) => {
+
+    getActivationReportScreenshotPath(req.params.id)
+    .then( qry => {
+        res.download(qry.ScreenshotPath)
+    }
     )
     .catch( _ =>
         res.status(500).json()
@@ -131,7 +164,8 @@ app.post('/api/reports', (req, res, next) => {
 
     getRaspberryPiByName(req.body.RaspberryPiName)
     .then( rasp =>
-        insertActivationReport(req.body.Datetime, req.body.ScreenshotPath, req.body.VideoPath, rasp.Id)
+        insertActivationReport(req.body.Datetime, __dirname + IMAGE_DIR + req.body.ScreenshotPath + IMAGE_TYPE, 
+                                __dirname + VIDEO_DIR + req.body.VideoPath + VIDEO_TYPE, rasp.Id)
         .then( qry =>
             res.status(201).json({
             report: qry
@@ -205,7 +239,6 @@ app.get('/api/pis/:id', (req, res, next) => {
         ]
 */
 app.get('/api/pis', (req, res, next) => {
-
     getAllRaspberryPis()
     .then( qry =>
         res.status(201).json({
@@ -225,15 +258,56 @@ app.get('/api/pis', (req, res, next) => {
 */
 app.post('/api/pis', (req, res, next) => {
 
+    // try to insert the ne raspberry pi
     insertRaspberryPi(req.body.Name)
-    .then( qry =>
+    .then(qry => {
         res.status(201).json({
-        pi: qry
-        })
-    )
-    .catch( _ =>
-        res.status(400).json()
-    );
+            pi: qry
+        });
+    })
+    .catch(err => {
+        // if it already exists, get the existing one
+        if (err.name === "SequelizeUniqueConstraintError"){
+            getRaspberryPiByName(req.body.Name)
+            .then(qry => {
+                res.status(201).json({
+                    pi: qry
+                });
+            })
+            .catch(_ => res.status(500).json())
+        }
+        else{
+            res.status(400).json();
+        }
+    })
+
+    /*
+    // old version with getter first
+    // try to get the raspberry
+    // if it does not exist insert it in the database
+    getRaspberryPiByName(req.body.Name)
+            .then(qry => {
+                if (qry === null){
+                    insertRaspberryPi(req.body.Name)
+                    .then(query => {
+                        res.status(201).json({
+                            pi: query
+                    });
+            })
+            .catch(_ => {
+                res.status(400).json();
+            })
+                }
+                else{
+                    res.status(201).json({
+                        pi: qry
+                    });
+                }
+            })
+    .catch(_ => {
+        res.status(500).json()
+    })
+    */
 });
 
 module.exports = app;
