@@ -36,12 +36,12 @@ ActivationReport.init({
     type: DataTypes.DATE,
     allowNull: false
   },
-  ScreenshotPath: {
+  VideoPath: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  VideoPath: {
-    type: DataTypes.STRING,
+  CameraId: {
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false
   },
 }, {

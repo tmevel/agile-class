@@ -60,12 +60,12 @@ function getActivationReportById(id){
     });
 }
 
-function insertActivationReport(datetime, screenshotPath, videoPath, raspberryPiId){
+function insertActivationReport(datetime, videoPath, CameraId){
     return ActivationReport.create({
         DateTime: datetime, 
-        ScreenshotPath: screenshotPath, 
         VideoPath: videoPath,
-        RaspberryPiId: raspberryPiId});
+        CameraId: CameraId,
+    });
 }
 
 function getActivationReportTimeStamps(){

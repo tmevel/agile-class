@@ -50,18 +50,22 @@ app.get('/api/livesList', (req, res, next) => {
 app.get('/api/keepAlive', (req, res, next) => {
     liveStatus.keepAlive(parseInt(req.query.id))
     let status = liveStatus.getStatus(parseInt(req.query.id))
-    res.status(201).json({
-        status: status
-    })
+    res.status(201).json()
 })
 
 app.post('/upload', function(req, res) {
-    filePath = __dirname + '/videofiles/'+Date.now()+'_'+parseInt(req.query.id)+'.avi';
-    console.log(filePath+' saved');
-    req.pipe(fs.createWriteStream(filePath, {flags:'a'}));
-    res.status(201).json({
-        status: "done"
-    })
+    try{
+        filePath = __dirname + '/videofiles/'+Date.now()+'_'+parseInt(req.query.id)+'.avi';
+        console.log(filePath+' saved');
+        req.pipe(fs.createWriteStream(filePath, {flags:'a'}));
+
+        insertActivationReport(new Date(), filePath, req.query.id)
+
+        res.status(201).json()
+    }catch(e){
+        print(e)
+        res.status(400).json()
+    }
 });
 
 // Activation reports
