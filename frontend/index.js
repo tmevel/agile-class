@@ -99,7 +99,7 @@ function fetchEvents(){
     var table = document.getElementById("event-table");
     $.get("http://" + host + ":3000/api/reports", function (data, status) {
         var htmlStr = "<tr><th>Time</th><th>Camera ID</th></tr>";
-        for (var i = data.reports.length-1; i >= 0; i++) {
+        for (var i = data.reports.length-1; i >= 0; i--) {
             htmlStr += "<tr><td><a href=\"http://" + host + ":4200/player.html?url="+ data.reports[i].VideoPath+"\"target=\"_blank\" rel=\"noopener noreferrer\">"+data.reports[i].DateTime+"</a></td><td>"+data.reports[i].CameraId+"</td></tr>"
         }
         table.innerHTML = htmlStr;
