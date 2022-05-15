@@ -55,7 +55,7 @@ app.get('/api/keepAlive', (req, res, next) => {
 
 app.post('/upload', function(req, res) {
     try{
-        filePath = __dirname + '/videofiles/'+Date.now()+'_'+parseInt(req.query.id)+'.avi';
+        filePath = __dirname + '../frontend/videofiles/'+Date.now()+'_'+parseInt(req.query.id)+'.avi';
         console.log(filePath+' saved');
         req.pipe(fs.createWriteStream(filePath, {flags:'a'}));
 

@@ -4,10 +4,9 @@ from time import sleep
 import threading
 
 
-#host = "195.14.189.82"
-host = "localhost"
+host = "195.14.189.82"
+#host = "localhost"
 camera_id = 0
-camera_name = "test"
 customer_email = "thomas.mevel@insa-rennes.fr"
 
 t1 = threading.Thread(target=run_stream_service, args=(camera_id,host,))

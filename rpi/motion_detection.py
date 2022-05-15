@@ -37,17 +37,38 @@ def filmAndSend(capture, camera_id, host, customer_email):
     upload_url = 'http://'+host+':3000/upload?id='+str(camera_id)
     try:
         with open('out.avi', 'rb') as f: r = requests.post(upload_url, files={'out.avi': f})
+        print("video uploaded")
     except Exception as e:
         print(e)
-
     send_mail(customer_email, camera_id, host, "picture.jpg")
+    print("mail sent")
 
     
 def run_motion_detection(camera_id, host, customer_email):
     # capturing video stream
     capture = cv2.VideoCapture("rtmp://"+host+":1935/live/"+str(camera_id))
 
+    next_update = time()
+    status = 'OFF'
+
     while capture.isOpened():
+
+        if next_update<=time():
+
+            try:
+                status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']['status']
+            except:
+                print('error: cannot get live status from backend')
+            
+            while status!='ON':
+                sleep(1)
+                try:
+                    status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']['status']
+                except:
+                    print('error: cannot get live status from backend')
+            
+            next_update = time()+30
+
         # to read frame by frame
         _, img_1 = capture.read()
         _, img_2 = capture.read()
@@ -80,7 +101,7 @@ def run_motion_detection(camera_id, host, customer_email):
         #cv2.imshow("Detecting Motion...", img_1)
 
         if motion_detected:
-            print(len(contours))
+            print("motion detected")
             filmAndSend(capture, camera_id, host, customer_email)
 
         if cv2.waitKey(100) == 13:
