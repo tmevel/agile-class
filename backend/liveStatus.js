@@ -1,6 +1,7 @@
 liveStatus = {
     status: new Map(),
 
+
     toggleStatus: function(numLive){
         if(!this.status.has(numLive)){
             return 'UNCONNECTED'
@@ -18,20 +19,29 @@ liveStatus = {
         }
         return this.status.get(numLive)
     },
+    keepAlive: function(numLive){
+        if(!this.status.has(numLive)){
+            this.status.set(numLive,{
+                status:'ON',
+                lastupdate: Date.now(),
+            })
+        }else{
+            this.status.get(numLive).lastupdate = Date.now()
+        }
+    },
+    deleteDeadLives: function(){
+        for (var entry of this.status.entries()) {
+            let liveNum = entry[0]
+            let lastUpdate = entry[1].lastupdate
+            if(Date.now()-lastUpdate>10000){ //more than 10s
+                this.status.delete(liveNum)
+            }
+        }
+    },
     getLivesList: function(){
+        this.deleteDeadLives()
         return Array.from(this.status)
     },
-    createLive: function(){
-        let i = 0
-        while(this.status.has(i)){
-            i++
-        }
-        this.status.set(i,'ON')
-        return i
-    },
-    deleteLive: function(numLive){
-        this.status.delete(numLive)
-    }
 };
 
 module.exports = liveStatus

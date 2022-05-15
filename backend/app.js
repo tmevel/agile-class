@@ -29,27 +29,27 @@ app.get('/api/toggleLiveStatus', (req, res, next) => {
 })
 
 app.get('/api/livesList', (req, res, next) => {
+    liveStatus.deleteDeadLives()
     res.status(200).json({
         lives: liveStatus.getLivesList()
     })
 })
 
-app.get('/api/createLive', (req, res, next) => {
-    res.status(200).json({
-        status: liveStatus.createLive()
+app.get('/api/keepAlive', (req, res, next) => {
+    liveStatus.keepAlive(parseInt(req.query.id))
+    let status = liveStatus.getStatus(parseInt(req.query.id))
+    res.status(201).json({
+        status: status
     })
 })
 
-app.get('/api/deleteLive', (req, res, next) => {
-    liveStatus.deleteLive(parseInt(req.query.id))
-    res.status(200)
-})
-
-app.post('/upload', function(request, respond) {
-    console.log('a');
-    filePath = __dirname + '/videofiles/'+(new Date())+'.mp4';
-    console.log(filePath);
-    request.pipe(fs.createWriteStream(filePath, {flags:'a'}));
+app.post('/upload', function(req, res) {
+    filePath = __dirname + '/videofiles/'+Date.now()+'_'+parseInt(req.query.id)+'.avi';
+    console.log(filePath+' saved');
+    req.pipe(fs.createWriteStream(filePath, {flags:'a'}));
+    res.status(201).json({
+        status: "done"
+    })
 });
 
 module.exports = app;
