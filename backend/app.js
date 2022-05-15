@@ -72,7 +72,7 @@ app.post('/upload', function(req, res) {
 app.get('/video', (req, res, next) => {
     res.setHeader('Content-Type', 'video/mp4');
 
-    res.status(200).sendFile(req.file);
+    res.status(200).sendFile(req.query.file);
 })
 
 // Activation reports
