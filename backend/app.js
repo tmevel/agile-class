@@ -56,7 +56,7 @@ app.get('/api/keepAlive', (req, res, next) => {
 app.post('/upload', function(req, res) {
     try{
         let date = Date.now()
-        filePath = __dirname + '/../frontend/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
+        filePath = __dirname + '/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
         console.log(filePath+' saved')
         req.pipe(fs.createWriteStream(filePath, {flags:'a'}))
 
@@ -68,6 +68,12 @@ app.post('/upload', function(req, res) {
         res.status(400).json()
     }
 });
+
+app.get('/video', (req, res, next) => {
+    res.setHeader('Content-Type', 'video/mp4');
+
+    res.status(200).sendFile(req.file);
+})
 
 // Activation reports
 

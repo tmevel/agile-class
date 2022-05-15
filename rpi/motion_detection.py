@@ -19,7 +19,7 @@ def filmAndSend(capture, camera_id, host, customer_email):
 
     size = (frame_width, frame_height)
 
-    result = cv2.VideoWriter('out.mp4', cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), 10, size)
+    result = cv2.VideoWriter('out1.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 10, size)
 
     begin = time()
 
@@ -33,6 +33,8 @@ def filmAndSend(capture, camera_id, host, customer_email):
             exit()
     
     result.release()
+
+    os.system("ffmpeg -i out1.mp4 -vcodec libx264 -y out.mp4")
 
     upload_url = 'http://'+host+':3000/upload?id='+str(camera_id)
     try:
