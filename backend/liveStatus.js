@@ -6,7 +6,7 @@ liveStatus = {
         if(!this.status.has(numLive)){
             return 'UNCONNECTED'
         }
-        if(this.status.get(numLive) == 'ON'){
+        if(this.status.get(numLive).status == 'ON'){
             this.status.get(numLive).status = 'OFF'
         }else{
             this.status.get(numLive).status = 'ON'

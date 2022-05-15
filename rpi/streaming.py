@@ -13,7 +13,7 @@ def run_stream_service(camera_id, host):
 
         status = 'OFF'
         try:
-            status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']['status']
+            status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']
         except:
             print('error: cannot get live status from backend')
 

@@ -52,7 +52,7 @@ window.onload = function () {
             htmlStr += "<option value=" + data.lives[i][0] + " id=option" + data.lives[i][0] + ">" + data.lives[i][0] + " (" + data.lives[i][1].status + ")</option>";
         }
         document.getElementById("live-select").innerHTML = htmlStr;
-        text.innerHTML = data.lives[0][1];
+        text.innerHTML = data.lives[0][1].status;
         changeLive();
     });
 }
@@ -91,4 +91,18 @@ function playLive(i) {
         flvPlayer.load();
         flvPlayer.play();
     }
+}
+
+function fetchEvent(){
+    var table = document.getElementById("event-table");
+    $.get("http://" + host + ":3000/api/reports", function (data, status) {
+        var htmlStr = "<tr><th>Date</th><th>Time</th><th>Camera ID</th></tr>";
+        for (var i = 0; i < data.reports.length; i++) {
+            htmlStr += "<tr><td><a href=\"http://" + host + ":4200"+ data.reports[i].VideoPath+"\">"+data.reports[i].DateTime+"</a></td><td>"+data.reports[i].CameraId+"</td></tr>"
+        }
+        document.getElementById("live-select").innerHTML = htmlStr;
+        text.innerHTML = data.lives[0][1].status;
+        changeLive();
+        
+    });
 }
