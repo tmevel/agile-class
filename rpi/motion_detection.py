@@ -19,7 +19,7 @@ def filmAndSend(capture, camera_id, host, customer_email):
 
     size = (frame_width, frame_height)
 
-    result = cv2.VideoWriter('out.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, size)
+    result = cv2.VideoWriter('out.mp4', cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), 10, size)
 
     begin = time()
 
@@ -36,7 +36,7 @@ def filmAndSend(capture, camera_id, host, customer_email):
 
     upload_url = 'http://'+host+':3000/upload?id='+str(camera_id)
     try:
-        with open('out.avi', 'rb') as f: r = requests.post(upload_url, files={'out.avi': f})
+        with open('out.mp4', 'rb') as f: r = requests.post(upload_url, files={'out.mp4': f})
         print("video uploaded")
     except Exception as e:
         print(e)

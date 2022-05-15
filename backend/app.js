@@ -56,11 +56,11 @@ app.get('/api/keepAlive', (req, res, next) => {
 app.post('/upload', function(req, res) {
     try{
         let date = Date.now()
-        filePath = __dirname + '/../frontend/videofiles/'+date+'_'+parseInt(req.query.id)+'.avi'
+        filePath = __dirname + '/../frontend/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
         console.log(filePath+' saved')
         req.pipe(fs.createWriteStream(filePath, {flags:'a'}))
 
-        insertActivationReport(new Date(), '/videofiles/'+date+'_'+parseInt(req.query.id)+'.avi', req.query.id)
+        insertActivationReport(new Date(), '/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4', req.query.id)
 
         res.status(201).json()
     }catch(e){
