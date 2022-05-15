@@ -49,7 +49,7 @@ window.onload = function () {
     $.get("http://" + host + ":3000/api/livesList", function (data, status) {
         var htmlStr = "";
         for (var i = 0; i < data.lives.length; i++) {
-            htmlStr += "<option value=" + data.lives[i][0] + " id=option" + data.lives[i][0] + ">" + data.lives[i][0] + " (" + data.lives[i][1] + ")</option>";
+            htmlStr += "<option value=" + data.lives[i][0] + " id=option" + data.lives[i][0] + ">" + data.lives[i][0] + " (" + data.lives[i][1].status + ")</option>";
         }
         document.getElementById("live-select").innerHTML = htmlStr;
         text.innerHTML = data.lives[0][1];

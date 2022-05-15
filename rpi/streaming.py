@@ -21,14 +21,13 @@ def run_stream_service(camera_id, host):
         if(status == 'ON' and ffmpeg is None):
             try:
                 print('start...')
-                ffmpeg = subprocess.Popen("ffmpeg -loglevel panic -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://"+host+"/live/"+str(camera_id), shell = True, preexec_fn=os.setsid)
+                ffmpeg = subprocess.Popen("ffmpeg -loglevel panic -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://"+host+"/live/"+str(camera_id), shell = True)
             except:
                 print('cannot start ffmpeg')
         elif(status == 'OFF' and ffmpeg is not None):
             try:
                 print('stop...')
-                #os.system('killall ffmpeg')
-                os.killpg(os.getpgid(ffmpeg.pid), signal.SIGTERM)
+                os.system('killall ffmpeg')
                 ffmpeg = None
             except Exception as e:
                 print('cannot stop ffmpeg')

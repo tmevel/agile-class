@@ -46,63 +46,51 @@ def filmAndSend(capture, camera_id, host, customer_email):
     
 def run_motion_detection(camera_id, host, customer_email):
     # capturing video stream
-    capture = cv2.VideoCapture("rtmp://"+host+":1935/live/"+str(camera_id))
 
-    next_update = time()
-    status = 'OFF'
+    while True:
+        try:
 
-    while capture.isOpened():
+            capture = cv2.VideoCapture("rtmp://"+host+":1935/live/"+str(camera_id))
 
-        if next_update<=time():
+            while capture.isOpened():
 
-            try:
-                status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']['status']
-            except:
-                print('error: cannot get live status from backend')
-            
-            while status!='ON':
-                sleep(1)
-                try:
-                    status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']['status']
-                except:
-                    print('error: cannot get live status from backend')
-            
-            next_update = time()+30
+                # to read frame by frame
+                _, img_1 = capture.read()
+                _, img_2 = capture.read()
 
-        # to read frame by frame
-        _, img_1 = capture.read()
-        _, img_2 = capture.read()
+                # find difference between two frames
+                diff = cv2.absdiff(img_1, img_2)
 
-        # find difference between two frames
-        diff = cv2.absdiff(img_1, img_2)
+                # to convert the frame to grayscale
+                diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
 
-        # to convert the frame to grayscale
-        diff_gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
+                # apply some blur to smoothen the frame
+                diff_blur = cv2.GaussianBlur(diff_gray, (5, 5), 0)
 
-        # apply some blur to smoothen the frame
-        diff_blur = cv2.GaussianBlur(diff_gray, (5, 5), 0)
+                # to get the binary image
+                _, thresh_bin = cv2.threshold(diff_blur, 20, 255, cv2.THRESH_BINARY)
 
-        # to get the binary image
-        _, thresh_bin = cv2.threshold(diff_blur, 20, 255, cv2.THRESH_BINARY)
+                # to find contours
+                contours, hierarchy = cv2.findContours(thresh_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        # to find contours
-        contours, hierarchy = cv2.findContours(thresh_bin, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+                motion_detected = False
 
-        motion_detected = False
+                for contour in contours:
+                    x, y, w, h = cv2.boundingRect(contour)
+                    if cv2.contourArea(contour) > 300:
+                        motion_detected = True
+                        cv2.rectangle(img_1, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                        # cv2.drawContours(img_1, contours, -1, (0, 255, 0), 2)
 
-        for contour in contours:
-            x, y, w, h = cv2.boundingRect(contour)
-            if cv2.contourArea(contour) > 300:
-                motion_detected = True
-                cv2.rectangle(img_1, (x, y), (x+w, y+h), (0, 255, 0), 2)
-                # cv2.drawContours(img_1, contours, -1, (0, 255, 0), 2)
+                # display the output
+                #cv2.imshow("Detecting Motion...", img_1)
 
-        # display the output
-        #cv2.imshow("Detecting Motion...", img_1)
+                if motion_detected:
+                    print("motion detected")
+                    filmAndSend(capture, camera_id, host, customer_email)
 
-        if motion_detected:
-            print("motion detected")
-            filmAndSend(capture, camera_id, host, customer_email)
-
-        if cv2.waitKey(100) == 13:
-            exit()
+                if cv2.waitKey(100) == 13:
+                    exit()
+        except:
+            print("stream closed")
+            sleep(5)

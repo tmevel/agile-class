@@ -7,17 +7,17 @@ liveStatus = {
             return 'UNCONNECTED'
         }
         if(this.status.get(numLive) == 'ON'){
-            this.status.set(numLive,'OFF')
+            this.status.get(numLive).status = 'OFF'
         }else{
-            this.status.set(numLive,'ON')
+            this.status.get(numLive).status = 'ON'
         }
-        return this.status.get(numLive)
+        return this.status.get(numLive).status
     },
     getStatus: function(numLive){
         if(!this.status.has(numLive)){
             return 'UNCONNECTED'
         }
-        return this.status.get(numLive)
+        return this.status.get(numLive).status
     },
     keepAlive: function(numLive){
         if(!this.status.has(numLive)){
