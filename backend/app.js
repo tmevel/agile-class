@@ -58,7 +58,7 @@ app.get('/api/keepAlive', (req, res, next) => {
 app.post('/upload', function(req, res) {
     try{
         let date = Date.now()
-        filePath = __dirname + '/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
+        filePath = __dirname + '/../frontend/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
         console.log(filePath+' saved')
 
         console.log(req.files)
