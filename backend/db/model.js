@@ -49,7 +49,7 @@ ActivationReport.init({
   modelName: 'ActivationReport'
 });
 
-RaspberryPi.hasOne(ActivationReport, {allowNull: false});
+//RaspberryPi.hasOne(ActivationReport, {allowNull: false});
 
 module.exports = {
   RaspberryPi,
