@@ -46,6 +46,8 @@ window.onload = function () {
     toggle = document.querySelector("#toggle");
     text = document.querySelector("#status");
 
+    fetchEvents();
+
     $.get("http://" + host + ":3000/api/livesList", function (data, status) {
         var htmlStr = "";
         for (var i = 0; i < data.lives.length; i++) {
@@ -93,7 +95,7 @@ function playLive(i) {
     }
 }
 
-function fetchEvent(){
+function fetchEvents(){
     var table = document.getElementById("event-table");
     $.get("http://" + host + ":3000/api/reports", function (data, status) {
         var htmlStr = "<tr><th>Date</th><th>Time</th><th>Camera ID</th></tr>";
