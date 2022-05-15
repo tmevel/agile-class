@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const fileUpload = require('express-fileupload');
 
 liveStatus = require('./liveStatus');
 
@@ -17,6 +18,7 @@ const {
 
 const app = express();
 app.use(express.json());
+app.use(fileUpload());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -58,7 +60,12 @@ app.post('/upload', function(req, res) {
         let date = Date.now()
         filePath = __dirname + '/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4'
         console.log(filePath+' saved')
-        req.pipe(fs.createWriteStream(filePath, {flags:'a'}))
+
+        console.log(req.files)
+        let sampleFile = req.files["out.mp4"]
+        sampleFile.mv(filePath)
+
+        //req.pipe(fs.createWriteStream(filePath, {flags:'a'}))
 
         insertActivationReport(new Date(), '/videofiles/'+date+'_'+parseInt(req.query.id)+'.mp4', req.query.id)
 
