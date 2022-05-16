@@ -4,21 +4,26 @@ import os
 from time import sleep
 
 
-def runLiveStreamService():
+def run_stream_service(camera_id, host):
+
     ffmpeg = None
+
     while(True):
+        ret = requests.get('http://'+host+':3000/api/keepAlive?id='+str(camera_id))
+
         status = 'OFF'
         try:
-            status = requests.get('http://195.14.189.82:3000/api/liveStatus').json()['status']
+            status = requests.get('http://'+host+':3000/api/liveStatus?id='+str(camera_id)).json()['status']
         except:
             print('error: cannot get live status from backend')
+
         
         if(status == 'ON' and ffmpeg is None):
             try:
                 print('start...')
-                ffmpeg = subprocess.Popen("ffmpeg -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://195.14.189.82/live/test", shell = True)
+                ffmpeg = subprocess.Popen("ffmpeg -loglevel panic -re -i /dev/video0 -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -pix_fmt yuv420p -f flv rtmp://"+host+"/live/"+str(camera_id), shell = True)
             except:
-                print('cannot run ffmpeg')
+                print('cannot start ffmpeg')
         elif(status == 'OFF' and ffmpeg is not None):
             try:
                 print('stop...')
@@ -27,6 +32,5 @@ def runLiveStreamService():
             except Exception as e:
                 print('cannot stop ffmpeg')
 
-        sleep(1)
 
-runLiveStreamService()
+        sleep(1)

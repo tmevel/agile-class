@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="livestream.css">
+    <script src="flv.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+</head>
+
+<body onload>
+    <video id="videoEl" width="640" height="320" autoplay></video>
+    <script>
+        window.onload = function(){
+            let url = window.location+"";
+            let paramString = url.split('?')[1];
+            let queryString = new URLSearchParams(paramString);
+            let videoEl = document.getElementById("videoEl");
+            console.log(queryString.get('url'));
+            videoEl.src = queryString.get('url');
+        }
+    </script>
+
+</body>
+
+</html>
