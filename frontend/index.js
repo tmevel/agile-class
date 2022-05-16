@@ -25,7 +25,7 @@ function startTime() {
 
 
 
-    var time = str1.bold() + ': ' +  hours + ' :  ' + minutes + ' : ' + seconds + '  ' + amPm;
+    var time = str1.bold() + ': ' +  hours + ':' + minutes + ':' + seconds + '  ' + amPm;
 
 
     /*display current time*/
