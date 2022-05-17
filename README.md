@@ -10,7 +10,7 @@ npm install
 
 ### frontend
 ```
-cd backend
+cd frontend
 npm install
 ```
 
